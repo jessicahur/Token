@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+const employeeConnection = mongoose.createConnection('mongodb://localhost/test');
 const Employee = new Schema({ //Future updates cannot alter id and username
   _id: {
     type: String,
@@ -48,4 +49,4 @@ const Employee = new Schema({ //Future updates cannot alter id and username
   }
 });
 
-module.exports = mongoose.model('Employee', Employee);
+module.exports = employeeConnection.model('Employee', Employee); //Bind this specific database connection to the Schema

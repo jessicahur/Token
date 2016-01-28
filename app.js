@@ -8,8 +8,8 @@ const Authenticat = require('authenticat');
 const app = express();
 const router = require('./lib/router');
 
-mongoose.connect('mongodb://localhost/tokenAuth');
-const connection = mongoose.connection;
+const connection = mongoose.createConnection('mongodb://localhost/tokenAuth');
+// const connection = mongoose.connection;
 const authenticat = new Authenticat(connection);
 
 app.use('/', authenticat.router); //general routing for signup, login and roles
