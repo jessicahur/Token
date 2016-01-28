@@ -16,6 +16,9 @@ const authenticat = new Authenticat(connection);
 chai.use(chaiHttp);
 
 describe('Token Authentication', () => {
+
+  var token = '';
+
   before( done => {
     connection.on('error', err => {
       connection.close();
@@ -38,6 +41,18 @@ describe('Token Authentication', () => {
         .get('/employees')
         .end((err, res) => {
           expect(res.status).to.equal(401);
+          done();
+        });
+  });
+
+  it('should successfully sign in and receive a token', done => {
+    chai.request(app)
+        .get('/signin')
+        .set('authorization', 'Basic dGVzdGluZzp0ZXN0')
+        .end((err, res) => {
+          token = res.body.token;
+          expect(res.status).to.equal(200);
+          expect(res.redirects.length).to.equal(0);
           done();
         });
   });
