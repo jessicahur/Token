@@ -19,6 +19,7 @@ describe('Token Authentication', () => {
 
   var token = '';
 
+  //signup for a test account. Even if it existed, err is not returned (get status 500 in res.status)
   before( done => {
     connection.on('error', err => {
       connection.close();
@@ -40,6 +41,7 @@ describe('Token Authentication', () => {
     chai.request(app)
         .get('/employees')
         .end((err, res) => {
+          expect(err).to.be.null;
           expect(res.status).to.equal(401);
           done();
         });
@@ -51,6 +53,19 @@ describe('Token Authentication', () => {
         .set('authorization', 'Basic dGVzdGluZzp0ZXN0')
         .end((err, res) => {
           token = res.body.token;
+          expect(err).to.be.null;
+          expect(res.status).to.equal(200);
+          expect(res.redirects.length).to.equal(0);
+          done();
+        });
+  });
+
+  it('should successfully access "/employees" with the given token', done => {
+    chai.request(app)
+        .get('/employees')
+        .set('token', token)
+        .end((err, res) => {
+          expect(err).to.be.null;
           expect(res.status).to.equal(200);
           expect(res.redirects.length).to.equal(0);
           done();
