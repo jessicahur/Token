@@ -1,6 +1,7 @@
 'use strict';
 const chai = require('chai');
 const chaiHttp = require('chai-http');
+const btoa = require('btoa');
 const assert = chai.assert;
 const expect = chai.expect;
 
@@ -42,15 +43,16 @@ describe('Token Authentication', () => {
         .get('/employees')
         .end((err, res) => {
           expect(err).to.be.null;
-          expect(res.status).to.equal(401);
+          assert.equal(res.statusCode, 401);
           done();
         });
   });
 
   it('should successfully sign in and receive a token', done => {
+    var header = btoa('testing'+':'+'test');
     chai.request(app)
         .get('/signin')
-        .set('authorization', 'Basic dGVzdGluZzp0ZXN0')
+        .set('authorization', 'Basic '+header) //'Basic dGVzdGluZzp0ZXN0'
         .end((err, res) => {
           token = res.body.token;
           expect(err).to.be.null;
