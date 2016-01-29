@@ -10,8 +10,8 @@ const router = require('./lib/router');
 const connection = mongoose.createConnection('mongodb://localhost/tokenAuth');
 const authenticat = new Authenticat(connection);
 
-app.use('/', authenticat.router); //general routing for signup, login and roles
 app.use('/employees', authenticat.tokenAuth, router);
+app.use('/', authenticat.router); //general routing for signup, login and roles
 
 //404
 app.use((req, res, next) => {
