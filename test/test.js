@@ -2,7 +2,6 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const btoa = require('btoa');
-const assert = chai.assert;
 const expect = chai.expect;
 
 const app = require('../app');
@@ -43,7 +42,7 @@ describe('Token Authentication', () => {
         .get('/employees')
         .end((err, res) => {
           expect(err).to.be.null;
-          assert.equal(res.status, 401);
+          expect(res.status).to.equal(401);
           done();
         });
   });
