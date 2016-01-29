@@ -43,7 +43,7 @@ describe('Token Authentication', () => {
         .get('/employees')
         .end((err, res) => {
           expect(err).to.be.null;
-          assert.equal(res.statusCode, 401);
+          assert.equal(res.status, 401);
           done();
         });
   });
